@@ -91,7 +91,8 @@ public class StatiscBiz {
 //        bbox = "104.073486328125,27.388916015625,119.893798828125,35.70556640625";
         String gisurl = resourcesUtil.getGisurl();
         String typename = resourcesUtil.getTypename();
-        String wmsurl = gisurl + "?service=WMS&request=GetMap&version=1.1.1&layers=" + typename + "&styles=&format=image/png&transparent=true&id=tipicLayercity&pane=[object%20HTMLDivElement]&srs=EPSG:4326&width=800&height=600&bbox=" + bbox;
+        String newGisUrl=resourcesUtil.getWmsUrl();
+        String wmsurl = newGisUrl + "?service=WMS&request=GetMap&version=1.1.1&layers=" + typename + "&styles=&format=image/png&transparent=true&id=tipicLayercity&pane=[object%20HTMLDivElement]&srs=EPSG:4326&width=800&height=600&bbox=" + bbox;
         return wmsurl;
     }
 

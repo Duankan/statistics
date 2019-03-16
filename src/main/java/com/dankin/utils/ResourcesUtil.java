@@ -19,6 +19,16 @@ public class ResourcesUtil {
     private String groupField_qs;
     @Value("${calcfield}")
     private String calcfield;
+    @Value("${wmsUrl}")
+    private String wmsUrl;
+
+    public String getWmsUrl() {
+        return wmsUrl;
+    }
+
+    public void setWmsUrl(String wmsUrl) {
+        this.wmsUrl = wmsUrl;
+    }
 
     public String getCalcfield() {
         return calcfield;

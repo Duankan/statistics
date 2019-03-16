@@ -133,13 +133,13 @@ public class HttpUtils {
         }
         String basePath = ResourceUtils.getURL("classpath:").getPath();
 //        G:\\dankin0814\\tool\\apache-tomcat-8.5.29-windows-x86\\apache-tomcat-8.5.29\\webapps
-        if (basePath.contains("webapps") || basePath.contains("ROOT")) {
-            basePath= StringUtils.substringBefore(basePath,"webapps")+"webapps\\ROOT\\";
-        }
+//        if (basePath.contains("webapps") || basePath.contains("ROOT")) {
+//            basePath= StringUtils.substringBefore(basePath,"webapps")+"webapps\\ROOT\\";
+//        }
         String filename = String.valueOf(System.currentTimeMillis()) + ".png";
         File desc = new File(basePath + filename);
         FileOutputStream out = new FileOutputStream(desc);
-        imageurl = ip+"/"+filename;
+//        imageurl = ip+"/"+filename;
         out.write(outStream.toByteArray());
         out.close();
 //        } catch (Exception e) {

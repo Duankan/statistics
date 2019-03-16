@@ -8,10 +8,8 @@ import com.dankin.biz.StatiscBiz;
 import com.dankin.utils.HttpUtils;
 import com.dankin.utils.Verify;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -22,7 +20,7 @@ import java.util.Map;
  * @date 2019-02-26
  * @descr 站立分析(点和面)
  */
-@RestController
+@Controller
 @RequestMapping("/")
 public class StatisController {
     @Autowired
@@ -32,6 +30,7 @@ public class StatisController {
 
     @CrossOrigin
     @RequestMapping("/statis")
+    @ResponseBody
     public Response analyze(@RequestBody String param,HttpServletRequest request){
         //1.简单验证
         boolean legal = Verify.legal(param);
@@ -59,5 +58,9 @@ public class StatisController {
             e.printStackTrace();
             return new Response(ResponseEnum.FAIL.getCode(), ResponseEnum.FAIL.getDisplayName());
         }
+    }
+    @RequestMapping("/html")
+    public String toHtml(){
+        return "wms";
     }
 }

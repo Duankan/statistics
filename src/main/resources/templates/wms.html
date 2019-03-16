@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>leaflet教程</title>
+    <script src="../static/js/jquery.min.js"></script>
+    <!--引进leaflet-->
+    <link rel="stylesheet" href="../static/js/leaflet/leaflet.css"/>
+    <script src="../static/js/leaflet/leaflet.js"></script>
+    <div class="head"></div>
+    <div class="content" id="map"></div>
+    <style>
+        body {
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+        }
+        .head {
+            width: 100%;
+            height: 10%;
+        }
+        .content {
+            width: 300px;
+            height: 400px;
+            left: 40%;
+        }
+    </style>
+</head>
+<body onload="init();">
+</body>
+<script>
+    function init() {
+        var map = L.map('map', {
+            center: {lon: 114, lat: 30.71},
+            crs: L.CRS.EPSG4326,
+            zoom: 8,
+            minZoom: 0,
+            maxZoom: 19
+        });
+        L.tileLayer.wms("http://192.168.1.98:8086/hgis/ows", {
+            layers: 'ktw:DLTB2017',
+            format: 'image/png',
+            transparent: true
+        }).addTo(map);
+        var latlngs =
+            [[30.20716935396194, 114.1169348359108],
+                [30.206689238548282, 114.11772340536118],
+                [30.206190347671512, 114.1170608997345],
+                [30.20684480667115, 114.11674171686172],
+                [30.20716935396194, 114.1169348359108]
+            ];
+        var polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
+        map.fitBounds(polygon.getBounds());
+    }
+</script>
+</html>
