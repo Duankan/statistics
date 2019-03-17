@@ -7,6 +7,9 @@ import com.dankin.utils.ResourcesUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.*;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +33,7 @@ public class StatiscBiz {
      */
     public String calcBbox(String polygon, String type) {
         String bbox = null;
-        String maxX,minX,maxY,minY;
+        String maxX, minX, maxY, minY;
         //点缓冲200m
         if ("point".equals(type)) {
             double unitY = 0.001801801802;//200m缓冲的偏移纬度
@@ -91,7 +94,7 @@ public class StatiscBiz {
 //        bbox = "104.073486328125,27.388916015625,119.893798828125,35.70556640625";
         String gisurl = resourcesUtil.getGisurl();
         String typename = resourcesUtil.getTypename();
-        String newGisUrl=resourcesUtil.getWmsUrl();
+        String newGisUrl = resourcesUtil.getWmsUrl();
         String wmsurl = newGisUrl + "?service=WMS&request=GetMap&version=1.1.1&layers=" + typename + "&styles=&format=image/png&transparent=true&id=tipicLayercity&pane=[object%20HTMLDivElement]&srs=EPSG:4326&width=800&height=600&bbox=" + bbox;
         return wmsurl;
     }
@@ -159,6 +162,50 @@ public class StatiscBiz {
             }
         }
         return ls;
+    }
+
+    /**
+     * @param param
+     * @return true/false
+     * @desc 将polygon保存到本地文件
+     * 1.将polygon保存到tomcat ROOT下的polygon.json
+     * 2.每次存之前先判断该文件是否存在，存在就删除，保证每次数据都是新添加的
+     */
+    public Boolean SavePolygonToLocalTXT(String param) {
+        boolean flag = true;
+        String path = resourcesUtil.getPolygonSaveDir();
+//        if (path.contains("webapps") || path.contains("ROOT")) {
+//            path= StringUtils.substringBefore(path,"webapps")+"webapps/ROOT/polygon.json";
+//        }
+//        path=StringUtils.substringBefore(path,"target")+"src/main/resources/static/polygon.json";
+//        path="C:/APP/apache-tomcat-8.5.31-windows-x64/apache-tomcat-8.5.31/webapps/ROOT/polygon.json";
+        path = URLDecoder.decode(path);
+        File file = new File(path);
+        OutputStream os = null;
+        if (file.exists()) {
+            file.delete();
+        }
+        try {
+            os = new FileOutputStream(file);
+            byte[] data = param.getBytes();
+            os.write(data, 0, data.length);
+            os.flush();
+
+        } catch (Exception e) {
+            flag = false;
+            e.printStackTrace();
+        } finally {
+            if (os != null) {
+                try {
+                    os.close();
+                } catch (Exception e) {
+                    flag = false;
+                    e.printStackTrace();
+                    System.out.println("关闭流失败!");
+                }
+            }
+            return flag;
+        }
     }
 }
 
