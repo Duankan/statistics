@@ -27,17 +27,17 @@ public class Verify {
                 legal = false;
             }
             //只要抛出异常，就说明参数格式不对
-//            if ("point".equals(type)) {
-////                String[] point = polygon.split(" ");
-////                if (point.length > 2 || point.length < 2) {
-////                    legal = false;
-////                    return legal;
-////                }
-////                for (int i = 0; i < point.length; i++) {
-////                    Double.parseDouble(point[i]);
-////                    legal = true;
-////                }
-////            }
+            if ("point".equals(type)) {
+                String[] point = polygon.split(" ");
+                if (point.length > 2 || point.length < 2) {
+                    legal = false;
+                    return legal;
+                }
+                for (int i = 0; i < point.length; i++) {
+                    Double.parseDouble(point[i]);
+                    legal = true;
+                }
+            }
             //只要抛出异常就参数不合格
 //            if("polygon".equals(type)){
 //                String[] points = polygon.split(",");

@@ -61,13 +61,26 @@
             cache: false,
             success: function (json) {
                 if(json!=null&&json.type!=null&&json.polygon!=null){
-                    polygon=json.polygon.split(",");
-                    for(var i=0;i<polygon.length;i++){
-                        var point=[];
-                        var points=polygon[i].split(" ");
-                        point.push(parseFloat(points[1]));
-                        point.push(parseFloat(points[0]));
-                        latlngs2.push(point);
+                    //多边形
+                    if(json.type=="polygon"){
+                        polygon=json.polygon.split(",");
+                        for(var i=0;i<polygon.length;i++){
+                            var point=[];
+                            var points=polygon[i].split(" ");
+                            point.push(parseFloat(points[1]));
+                            point.push(parseFloat(points[0]));
+                            latlngs2.push(point);
+                        }
+                        var polygon = L.polygon(latlngs2, {color: 'yellow'}).addTo(map);
+                        map.fitBounds(polygon.getBounds());
+                    }
+                    //缓冲园
+                    else{
+                        var pointCopy=[];
+                        pointCopy.push(json.polygon.split(" ")[1]);
+                        pointCopy.push(json.polygon.split(" ")[0]);
+                        var cirle=L.circle(pointCopy, {radius: 20000}).addTo(map);
+                        map.fitBounds(cirle.getBounds());
                     }
                 }
             },
@@ -76,8 +89,6 @@
             }
 
         });
-        var polygon = L.polygon(latlngs2, {color: 'yellow'}).addTo(map);
-        map.fitBounds(polygon.getBounds());
     }
 </script>
 </html>

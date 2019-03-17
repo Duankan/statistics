@@ -69,4 +69,9 @@ public class StatisController {
             return new Response(ResponseEnum.FAIL.getCode(), ResponseEnum.FAIL.getDisplayName());
         }
     }
+
+    @RequestMapping("/html")
+    public String html(){
+        return "wms";
+    }
 }
