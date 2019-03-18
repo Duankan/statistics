@@ -19,56 +19,47 @@ public class ResourcesUtil {
     private String groupField_qs;
     @Value("${calcfield}")
     private String calcfield;
-    @Value("${wmsUrl}")
-    private String wmsUrl;
     @Value("${viewUrl}")
     private String viewUrl;
-    @Value("${dev}")
-    private String dev;
     @Value("${polygonSaveDir}")
     private String polygonSaveDir;
     @Value("${imageDir}")
     private String imageDir;
+    @Value("${phantomjsDir}")
+    private String phantomjsDir;
+    @Value("${imageSize}")
+    private String imageSize;
 
+    public String getImageSize() {
+        return imageSize;
+    }
+    public void setImageSize(String imageSize) {
+        this.imageSize = imageSize;
+    }
+    public String getPhantomjsDir() {
+        return phantomjsDir;
+    }
+    public void setPhantomjsDir(String phantomjsDir) {
+        this.phantomjsDir = phantomjsDir;
+    }
     public String getImageDir() {
         return imageDir;
     }
-
     public void setImageDir(String imageDir) {
         this.imageDir = imageDir;
     }
-
     public String getPolygonSaveDir() {
         return polygonSaveDir;
     }
-
     public void setPolygonSaveDir(String polygonSaveDir) {
         this.polygonSaveDir = polygonSaveDir;
     }
-
-    public String getDev() {
-        return dev;
-    }
-
-    public void setDev(String dev) {
-        this.dev = dev;
-    }
-
     public String getViewUrl() {
         return viewUrl;
     }
-
     public void setViewUrl(String viewUrl) {
         this.viewUrl = viewUrl;
     }
-
-    public String getWmsUrl() {
-        return wmsUrl;
-    }
-    public void setWmsUrl(String wmsUrl) {
-        this.wmsUrl = wmsUrl;
-    }
-
     public String getCalcfield() {
         return calcfield;
     }

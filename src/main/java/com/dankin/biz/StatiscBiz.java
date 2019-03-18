@@ -94,8 +94,8 @@ public class StatiscBiz {
 //        bbox = "104.073486328125,27.388916015625,119.893798828125,35.70556640625";
         String gisurl = resourcesUtil.getGisurl();
         String typename = resourcesUtil.getTypename();
-        String newGisUrl = resourcesUtil.getWmsUrl();
-        String wmsurl = newGisUrl + "?service=WMS&request=GetMap&version=1.1.1&layers=" + typename + "&styles=&format=image/png&transparent=true&id=tipicLayercity&pane=[object%20HTMLDivElement]&srs=EPSG:4326&width=800&height=600&bbox=" + bbox;
+//        String newGisUrl = resourcesUtil.getWmsUrl();
+        String wmsurl = gisurl + "?service=WMS&request=GetMap&version=1.1.1&layers=" + typename + "&styles=&format=image/png&transparent=true&id=tipicLayercity&pane=[object%20HTMLDivElement]&srs=EPSG:4326&width=800&height=600&bbox=" + bbox;
         return wmsurl;
     }
 
@@ -174,11 +174,6 @@ public class StatiscBiz {
     public Boolean SavePolygonToLocalTXT(String param) {
         boolean flag = true;
         String path = resourcesUtil.getPolygonSaveDir();
-//        if (path.contains("webapps") || path.contains("ROOT")) {
-//            path= StringUtils.substringBefore(path,"webapps")+"webapps/ROOT/polygon.json";
-//        }
-//        path=StringUtils.substringBefore(path,"target")+"src/main/resources/static/polygon.json";
-//        path="C:/APP/apache-tomcat-8.5.31-windows-x64/apache-tomcat-8.5.31/webapps/ROOT/polygon.json";
         path = URLDecoder.decode(path);
         File file = new File(path);
         OutputStream os = null;

@@ -8,6 +8,8 @@ package com.dankin.base;
 public enum ResponseEnum {
     FAIL("500", "分析失败", ""),
     NOLEGAL("501","参数格式有误",""),
+    SAVEPOLYFAIL("502","保存坐标文件失败",""),
+    SAVEPNGFAIL("503","保存图片失败",""),
     SUCCESS("200", "分析成功", "");
     private String code;
     private String displayName;

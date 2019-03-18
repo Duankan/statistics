@@ -8,6 +8,7 @@ package com.dankin.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.io.*;
 
 public class PhantomTools {
@@ -16,45 +17,44 @@ public class PhantomTools {
 
     // private static final String _tempPath = "/data/temp/phantom_";
     // private static final String _shellCommand = "/usr/local/xxx/phantomjs /usr/local/xxx/rasterize.js ";  Linux下的命令
-    private static final String _tempPath = "C:\\Users\\ljiu\\Desktop\\image\\phantom_";
-    private static final String _shellCommand = "D:\\phantomjs-1.9.2-windows\\phantomjs D:\\phantomjs-1.9.2-windows\\rasterize.js ";
-
+//    private static final String _tempPath = "C:\\Users\\ljiu\\Desktop\\image\\phantom_";
+//    private static final String _shellCommand = "E:\\phantomjs-1.9.2-windows\\phantomjs E:\\phantomjs-1.9.2-windows\\rasterize.js ";
+    private String _shellCommand;
     private String _file;
     private String _size;
 
     /**
-     * 构造截图类
-     *
      * @parm hash 用于临时文件的目录唯一化
+     * @desc 构造截图类
      */
-    public PhantomTools(int hash,String _tempPath) {
+    public PhantomTools(int hash, String _tempPath, String _shellCommanddir) {
         try {
-            _file=_tempPath+hash+".png";
-        }
-        catch (Exception e){
+            _file = _tempPath + hash + ".png";
+            _shellCommand = _shellCommanddir;
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * 构造截图类
-     *
-     * @param size 图片的大小，如800px*600px（此时高度会裁切），或800px（此时 高度最少=宽度*9/16，高度不裁切）
+     * @param size          图片的大小，如800px*600px（此时高度会裁切），或800px（此时 高度最少=宽度*9/16，高度不裁切）
+     * @param _tempPath     图片的临时保存地址
+     * @param _shellCommand phantomjs文件脚本执行的路径
      * @parm hash 用于临时文件的目录唯一化
+     * @desc 构造截图类
      */
-    public PhantomTools(int hash, String size,String _tempPath) {
-        this(hash,_tempPath);
+    public PhantomTools(int hash, String size, String _tempPath, String _shellCommand) {
+        this(hash, _tempPath, _shellCommand);
         if (size != null)
             _size = " " + size;
     }
 
     /**
-     * 将目标网页转为图片字节流
-     *
      * @param url 目标网页地址
-     * @return 字节流
+     * @return 图片保存路径
+     * @desc 将目标网页转为图片字节流
      */
-    public  String getByteImg(String url) throws IOException {
+    public String getByteImg(String url) throws IOException {
         BufferedInputStream in = null;
         ByteArrayOutputStream out = null;
         File file = null;
@@ -99,7 +99,9 @@ public class PhantomTools {
     }
 
     /**
-     * 执行CMD命令
+     * @param commandStr
+     * @return false/true
+     * @desc 执行CMD命令
      */
     private static boolean exeCmd(String commandStr) {
         BufferedReader br = null;
