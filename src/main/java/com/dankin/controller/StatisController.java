@@ -43,7 +43,6 @@ public class StatisController {
         }
         String ip="http://"+request.getLocalAddr()+":"+String.valueOf(request.getLocalPort());
         //2.拼接wms的url与统计土地分类和权属的wfs的url
-//        String wmsurl = statiscBiz.appendWmsUrl(param);
         Map<String, String> urlAndParams_dl = statiscBiz.appnedWfsUrlAndParam(param, "dl");
         Map<String, String> urlAndParams_qs = statiscBiz.appnedWfsUrlAndParam(param, "qs");
         //保存polygon.json到tomcat服务器
@@ -55,12 +54,13 @@ public class StatisController {
             //phantomjs把绘制的图截屏保存到tomcat服务器
             PhantomTools phantomTools = new PhantomTools(1001,resourcesUtil.getImageSize(),resourcesUtil.getImageDir(),resourcesUtil.getPhantomjsDir());
             System.out.println("请求地址--："+resourcesUtil.getViewUrl());
-            String path=phantomTools.getByteImg(resourcesUtil.getViewUrl());
-            path= ip+StringUtils.substringAfter(path,"ROOT");
+            Map<String,Object> result=phantomTools.getByteImg(resourcesUtil.getViewUrl());
+            if(result.get("ret")==null){
+                return new Response(ResponseEnum.SAVEPNGFAIL.getCode(), ResponseEnum.SAVEPNGFAIL.getDisplayName());
+            }
+            String path= ip+StringUtils.substringAfter((String) result.get("_file"),"ROOT");
             System.out.println("图片保存地址--:"+path);
 
-            //3.请求wms
-//            String Imageres = httpUtils.doGetImage(wmsurl,ip);
             //4.请求wfs
             List<Map<String, Object>> l = HttpUtils.addHeadAndParam("application/x-www-form-urlencoded", JSONObject.parse(urlAndParams_dl.get("postParam")).toString());
             String dlres = httpUtils.doPost(urlAndParams_dl.get("wfsurl"), l.get(1), l.get(0));

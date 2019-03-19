@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PhantomTools {
 
@@ -54,11 +56,14 @@ public class PhantomTools {
      * @return 图片保存路径
      * @desc 将目标网页转为图片字节流
      */
-    public String getByteImg(String url) throws IOException {
+    public Map<String, Object> getByteImg(String url) throws IOException {
+        Map<String, Object> maps = new HashMap<>();
         BufferedInputStream in = null;
         ByteArrayOutputStream out = null;
         File file = null;
         byte[] ret = null;
+        maps.put("ret", ret);
+        maps.put("_file", _file);
         try {
             if (exeCmd(_shellCommand + url + " " + _file + (_size != null ? _size : ""))) {
                 file = new File(_file);
@@ -72,6 +77,7 @@ public class PhantomTools {
                     }
                     file.delete();
                     ret = out.toByteArray();
+                    maps.put("ret", ret);
                 }
             } else {
                 ret = new byte[]{};
@@ -94,8 +100,9 @@ public class PhantomTools {
             if (file != null && file.exists()) {
 //                file.delete();
             }
+            return maps;
         }
-        return _file;
+//        return maps;
     }
 
     /**
