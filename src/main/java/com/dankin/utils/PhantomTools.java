@@ -1,14 +1,13 @@
 package com.dankin.utils;
 
 /**
- * @desc 网页转图片处理类，使用外部CMD
  * @author dankin
  * @date 2019-03-16
+ * @desc 网页转图片处理类，使用外部CMD
  */
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;

@@ -29,7 +29,23 @@ public class ResourcesUtil {
     private String phantomjsDir;
     @Value("${imageSize}")
     private String imageSize;
+    @Value("${arcgis_JsonDir}")
+    private String arcgis_JsonDir;
+    @Value("${Arcgis_pageSize}")
+    private String Arcgis_pageSize;
 
+    public String getArcgis_pageSize() {
+        return Arcgis_pageSize;
+    }
+    public void setArcgis_pageSize(String arcgis_pageSize) {
+        Arcgis_pageSize = arcgis_pageSize;
+    }
+    public String getArcgis_JsonDir() {
+        return arcgis_JsonDir;
+    }
+    public void setArcgis_JsonDir(String arcgis_JsonDir) {
+        this.arcgis_JsonDir = arcgis_JsonDir;
+    }
     public String getImageSize() {
         return imageSize;
     }

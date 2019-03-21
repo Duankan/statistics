@@ -10,9 +10,12 @@ import com.dankin.utils.PhantomTools;
 import com.dankin.utils.ResourcesUtil;
 import com.dankin.utils.Verify;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +23,7 @@ import java.util.Map;
 /**
  * @author dankin
  * @date 2019-02-26
- * @descr 站立分析(点和面)
+ * @desc 站立分析(点和面)
  */
 @Controller
 @RequestMapping("/")
@@ -31,35 +34,36 @@ public class StatisController {
     public HttpUtils httpUtils;
     @Autowired
     public ResourcesUtil resourcesUtil;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @CrossOrigin
     @RequestMapping("/statis")
     @ResponseBody
-    public Response analyze(@RequestBody String param,HttpServletRequest request){
+    public Response analyze(@RequestBody String param, HttpServletRequest request) {
         //1.简单验证
         boolean legal = Verify.legal(param);
         if (!legal) {
             return new Response(ResponseEnum.NOLEGAL.getCode(), ResponseEnum.NOLEGAL.getDisplayName());
         }
-        String ip="http://"+request.getLocalAddr()+":"+String.valueOf(request.getLocalPort());
+        String ip = "http://" + request.getLocalAddr() + ":" + String.valueOf(request.getLocalPort());
         //2.拼接wms的url与统计土地分类和权属的wfs的url
         Map<String, String> urlAndParams_dl = statiscBiz.appnedWfsUrlAndParam(param, "dl");
         Map<String, String> urlAndParams_qs = statiscBiz.appnedWfsUrlAndParam(param, "qs");
         //保存polygon.json到tomcat服务器
-        boolean isWrite=statiscBiz.SavePolygonToLocalTXT(param);
-        if(!isWrite){
+        boolean isWrite = statiscBiz.SavePolygonToLocalTXT(param);
+        if (!isWrite) {
             return new Response(ResponseEnum.SAVEPOLYFAIL.getCode(), ResponseEnum.SAVEPNGFAIL.getDisplayName());
         }
         try {
             //phantomjs把绘制的图截屏保存到tomcat服务器
-            PhantomTools phantomTools = new PhantomTools(1001,resourcesUtil.getImageSize(),resourcesUtil.getImageDir(),resourcesUtil.getPhantomjsDir());
-            System.out.println("请求地址--："+resourcesUtil.getViewUrl());
-            Map<String,Object> result=phantomTools.getByteImg(resourcesUtil.getViewUrl());
-            if(result.get("ret")==null){
+            PhantomTools phantomTools = new PhantomTools(1001, resourcesUtil.getImageSize(), resourcesUtil.getImageDir(), resourcesUtil.getPhantomjsDir());
+            logger.info("请求页面地址>>>"+ resourcesUtil.getViewUrl());
+            Map<String, Object> result = phantomTools.getByteImg(resourcesUtil.getViewUrl());
+            if (result.get("ret") == null) {
                 return new Response(ResponseEnum.SAVEPNGFAIL.getCode(), ResponseEnum.SAVEPNGFAIL.getDisplayName());
             }
-            String path= ip+StringUtils.substringAfter((String) result.get("_file"),"ROOT");
-            System.out.println("图片保存地址--:"+path);
+            String path = ip + StringUtils.substringAfter((String) result.get("_file"), "ROOT");
+            logger.info("图片保存地址>>>"+path);
 
             //4.请求wfs
             List<Map<String, Object>> l = HttpUtils.addHeadAndParam("application/x-www-form-urlencoded", JSONObject.parse(urlAndParams_dl.get("postParam")).toString());
@@ -77,7 +81,7 @@ public class StatisController {
     }
 
     @RequestMapping("/html")
-    public String html(){
+    public String html() {
         return "wms";
     }
 }

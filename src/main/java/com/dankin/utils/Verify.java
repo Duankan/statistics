@@ -64,4 +64,27 @@ public class Verify {
             return legal;
         }
     }
+
+    /**
+     * @param param
+     * @return
+     * @desc 验证Arcgis服务转geoJson
+     */
+    public static Boolean validateArcgis(String param){
+        boolean flag=true;
+        try {
+            JSONObject object= (JSONObject) JSONObject.parse(param);
+            String url=object.getString("url");
+            if(StringUtils.isEmpty(url)){
+                flag=false;
+            }
+        }
+        catch (Exception e){
+            flag=false;
+            e.printStackTrace();
+        }
+        finally {
+            return flag;
+        }
+    }
 }
